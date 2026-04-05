@@ -1,0 +1,562 @@
+/* ===================================================
+   LOGIN PAGE — Medicare Apotek Online
+   Tambahkan ke: public/fe/css/style.css
+   Semua class pakai prefix .login- agar tidak konflik
+   =================================================== */
+
+/* ---------- Global font (penting!) ---------- */
+* {
+    font-family: 'Sora', 'Poppins', sans-serif;
+}
+
+html, body {
+    font-family: 'Sora', 'Poppins', sans-serif;
+}
+
+/* ---------- Body override (hanya di halaman login) ---------- */
+.login-page-body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: 'Sora', 'Poppins', sans-serif;
+}
+@media (max-width: 767.98px) {
+    .login-page-body { overflow: auto; }
+}
+
+/* ---------- Page Layout (dua kolom) ---------- */
+.login-page {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 100vh;
+    width: 100%;
+}
+@media (max-width: 991.98px) {
+    .login-page { grid-template-columns: 1fr; }
+}
+
+/* =====================================================
+   LEFT PANEL — Branding
+   ===================================================== */
+.login-panel {
+    position: relative;
+    background: linear-gradient(135deg, #000a57 0%, #001a7a 50%, #0066cc 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    overflow: hidden;
+    min-height: 100vh;
+}
+@media (max-width: 991.98px) {
+    .login-panel { display: none; }
+}
+
+/* Orbs */
+.login-panel__bg-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(70px);
+    pointer-events: none;
+    z-index: 0;
+}
+.login-panel__bg-orb--1 {
+    width: 500px; height: 500px;
+    top: -150px; right: -100px;
+    background: radial-gradient(circle, rgba(13,202,240,0.2) 0%, transparent 70%);
+    animation: loginOrbFloat 8s ease-in-out infinite;
+}
+.login-panel__bg-orb--2 {
+    width: 350px; height: 350px;
+    bottom: -100px; left: -80px;
+    background: radial-gradient(circle, rgba(0,102,204,0.25) 0%, transparent 70%);
+    animation: loginOrbFloat 10s ease-in-out infinite reverse;
+}
+@keyframes loginOrbFloat {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-25px); }
+}
+
+/* Grid texture */
+.login-panel__grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(13,202,240,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(13,202,240,0.04) 1px, transparent 1px);
+    background-size: 50px 50px;
+    z-index: 0;
+}
+
+/* Content */
+.login-panel__content {
+    position: relative;
+    z-index: 2;
+    color: #fff;
+    max-width: 420px;
+    width: 100%;
+    text-align: left;
+}
+
+/* Logo */
+.login-panel__logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+    margin-bottom: 1.5rem;
+}
+.login-panel__logo-icon {
+    width: 42px; height: 42px;
+    background: rgba(13,202,240,0.15);
+    border: 1px solid rgba(13,202,240,0.4);
+    border-radius: 11px;
+    display: flex; align-items: center; justify-content: center;
+    color: #0dcaf0;
+    font-size: 1.15rem;
+}
+.login-panel__logo-icon--sm {
+    width: 34px; height: 34px;
+    font-size: 0.95rem;
+    background: linear-gradient(135deg, #000a57, #0066cc);
+    border: none;
+}
+.login-panel__logo-text {
+    font-family: 'Sora', 'Poppins', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.5px;
+}
+.login-panel__logo-text--dark {
+    color: #000a57;
+}
+.login-panel__logo-accent {
+    color: #0dcaf0;
+}
+
+/* Tagline */
+.login-panel__tagline {
+    font-family: 'Sora', 'Poppins', sans-serif;
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+    margin-bottom: 1rem;
+}
+.login-panel__sub {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+}
+
+/* Stats */
+.login-panel__stats {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+    padding: 1.1rem 1.5rem;
+    backdrop-filter: blur(10px);
+}
+.login-panel__stat {
+    flex: 1;
+    text-align: center;
+}
+.login-panel__stat-num {
+    font-family: 'Sora', 'Poppins', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1;
+    margin-bottom: 0.2rem;
+}
+.login-panel__stat-label {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+.login-panel__stat-divider {
+    width: 1px;
+    height: 36px;
+    background: rgba(255,255,255,0.15);
+    flex-shrink: 0;
+}
+
+/* Features */
+.login-panel__features {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+.login-panel__feat {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.85);
+    font-weight: 500;
+}
+.login-panel__feat-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: rgba(13,202,240,0.15);
+    border: 1px solid rgba(13,202,240,0.3);
+    display: flex; align-items: center; justify-content: center;
+    color: #0dcaf0;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+}
+
+/* =====================================================
+   RIGHT PANEL — Form
+   ===================================================== */
+.login-form-panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+.login-form-wrap {
+    width: 100%;
+    max-width: 400px;
+    animation: loginFadeUp 0.6s cubic-bezier(0.23,1,0.32,1) both;
+    font-family: 'Sora', 'Poppins', sans-serif;
+}
+@keyframes loginFadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobile logo */
+.login-form-wrap__mobile-logo {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    margin-bottom: 2rem;
+}
+@media (max-width: 991.98px) {
+    .login-form-wrap__mobile-logo { display: inline-flex; }
+}
+
+/* Heading */
+.login-form-wrap__title {
+    font-family: 'Sora', 'Poppins', sans-serif;
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #000a57;
+    letter-spacing: -0.5px;
+    margin-bottom: 0.4rem;
+}
+.login-form-wrap__subtitle {
+    font-size: 0.92rem;
+    color: #64748b;
+    margin-bottom: 2rem;
+}
+
+/* Error alert */
+.login-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    background: rgba(239,68,68,0.08);
+    border: 1px solid rgba(239,68,68,0.25);
+    border-radius: 10px;
+    padding: 0.9rem 1rem;
+    font-size: 0.87rem;
+    color: #dc2626;
+    margin-bottom: 1.5rem;
+}
+.login-alert__icon {
+    font-size: 1rem;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+/* Form */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+/* Field */
+.login-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+.login-field__label {
+    font-family: 'Sora', 'Poppins', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #374151;
+    letter-spacing: 0.02em;
+}
+.login-field__input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.login-field__icon {
+    position: absolute;
+    left: 1rem;
+    color: #94a3b8;
+    font-size: 0.88rem;
+    pointer-events: none;
+    z-index: 1;
+    transition: color 0.2s;
+}
+.login-field__input {
+    width: 100%;
+    padding: 0.85rem 1rem 0.85rem 2.75rem;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    font-family: 'DM Sans', 'Poppins', sans-serif;
+    font-size: 0.93rem;
+    color: #0f172a;
+    background: #f8fafc;
+    outline: none;
+    transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+.login-field__input:focus {
+    border-color: #0dcaf0;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(13,202,240,0.12);
+}
+.login-field__input:focus + .login-field__icon,
+.login-field__input-wrap:focus-within .login-field__icon {
+    color: #0066cc;
+}
+.login-field__input--password {
+    padding-right: 3rem;
+}
+.login-field__toggle-pw {
+    position: absolute;
+    right: 0.85rem;
+    background: none;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    font-size: 0.88rem;
+    padding: 0;
+    transition: color 0.2s;
+    z-index: 1;
+}
+.login-field__toggle-pw:hover { color: #0066cc; }
+
+/* Remember */
+.login-remember {
+    margin-top: -0.25rem;
+}
+.login-remember__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    cursor: pointer;
+    font-size: 0.87rem;
+    color: #475569;
+    user-select: none;
+}
+.login-remember__checkbox {
+    display: none;
+}
+.login-remember__custom {
+    width: 18px; height: 18px;
+    border: 2px solid #cbd5e1;
+    border-radius: 5px;
+    background: #fff;
+    flex-shrink: 0;
+    transition: background 0.2s, border-color 0.2s;
+    position: relative;
+}
+.login-remember__checkbox:checked ~ .login-remember__custom {
+    background: #0066cc;
+    border-color: #0066cc;
+}
+.login-remember__custom::after {
+    content: '';
+    position: absolute;
+    top: 2px; left: 5px;
+    width: 5px; height: 9px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    border-radius: 1px;
+    transform: rotate(45deg);
+    opacity: 0;
+    transition: opacity 0.15s;
+}
+.login-remember__checkbox:checked ~ .login-remember__custom::after {
+    opacity: 1;
+}
+
+/* Submit button */
+.login-submit-btn {
+    width: 100%;
+    padding: 0.9rem;
+    background: linear-gradient(135deg, #000a57 0%, #0066cc 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Sora', 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.23,1,0.32,1);
+    box-shadow: 0 4px 15px rgba(0,102,204,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0.25rem;
+}
+.login-submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,102,204,0.45);
+}
+.login-submit-btn:active {
+    transform: translateY(0);
+}
+
+/* Divider */
+.login-divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 1.5rem 0;
+    color: #cbd5e1;
+    font-size: 0.82rem;
+}
+.login-divider::before,
+.login-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #e2e8f0;
+}
+
+/* Register button */
+.login-register-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0.85rem;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    font-family: 'Sora', 'Poppins', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #000a57;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    background: #fff;
+}
+.login-register-btn:hover {
+    border-color: #0dcaf0;
+    background: rgba(13,202,240,0.05);
+    color: #0066cc;
+    text-decoration: none;
+    transform: translateY(-1px);
+}
+
+/* Footer text */
+.login-footer-text {
+    text-align: center;
+    font-size: 0.78rem;
+    color: #94a3b8;
+    margin-top: 1.5rem;
+    margin-bottom: 0;
+    line-height: 1.6;
+}
+.login-footer-text a {
+    color: #0066cc;
+    text-decoration: none;
+}
+.login-footer-text a:hover {
+    text-decoration: underline;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 767.98px) {
+    .login-form-panel { padding: 2rem 1.25rem; align-items: flex-start; padding-top: 3rem; }
+    .login-form-wrap { max-width: 100%; }
+}
+
+/* ===================================================
+   REGISTER PAGE — Medicare Apotek Online
+   Tambahkan ke: public/fe/css/style.css
+   (Setelah blok login CSS)
+
+   Hanya berisi class TAMBAHAN yang tidak ada di login.
+   Semua class login- sudah di-reuse langsung dari login CSS.
+   Prefix .reg- untuk elemen spesifik register.
+   =================================================== */
+
+/* Scroll on form panel (register punya lebih banyak field) */
+.reg-form-wrap {
+    max-height: 100vh;
+    overflow-y: auto;
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(13,202,240,0.3) transparent;
+}
+.reg-form-wrap::-webkit-scrollbar {
+    width: 4px;
+}
+.reg-form-wrap::-webkit-scrollbar-track {
+    background: transparent;
+}
+.reg-form-wrap::-webkit-scrollbar-thumb {
+    background: rgba(13,202,240,0.3);
+    border-radius: 4px;
+}
+
+/* Tighter gap antar field (karena ada 4 field) */
+.reg-form {
+    gap: 1rem !important;
+}
+
+/* Per-field inline error */
+.reg-field-error {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.78rem;
+    color: #dc2626;
+    margin-top: 0.3rem;
+    font-weight: 500;
+}
+.reg-field-error i {
+    font-size: 0.72rem;
+    flex-shrink: 0;
+}
+
+/* Submit button accent — cyan gradient (beda dari login yang biru gelap) */
+.reg-submit-btn {
+    background: linear-gradient(135deg, #000a57 0%, #0066cc 60%, #0dcaf0 100%) !important;
+    box-shadow: 0 4px 15px rgba(13,202,240,0.25) !important;
+}
+.reg-submit-btn:hover {
+    box-shadow: 0 8px 25px rgba(13,202,240,0.4) !important;
+}
+
+/* Responsive */
+@media (max-width: 767.98px) {
+    .reg-form-wrap {
+        max-height: none;
+        overflow-y: visible;
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+    }
+}

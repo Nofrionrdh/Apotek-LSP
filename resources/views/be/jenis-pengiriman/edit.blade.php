@@ -1,0 +1,56 @@
+@extends('be.master')
+@section('sidebar')
+    @include('be.sidebar')
+@endsection
+
+@section('main-content')
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <div class="main-body">
+            <div class="page-wrapper">
+                <div class="row w-100">
+                    <div class="col-12">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-info text-white">
+                                <h4 class="mb-0">Edit Jenis Pengiriman</h4>
+                            </div>
+                            <div class="card-body">
+                                <form action="{{ route('jenis-pengiriman.update', $jenis_pengiriman->id) }}" method="POST" enctype="multipart/form-data">
+                                    @csrf @method('PUT')
+                                    <div class="mb-3">
+                                        <label>Jenis Kirim</label>
+                                        <select name="jenis_kirim" class="form-control" required>
+                                            @foreach(App\Models\JenisPengiriman::jenisKirimList() as $key => $value)
+                                                <option value="{{ $key }}" {{ $jenis_pengiriman->jenis_kirim == $key ? 'selected' : '' }}>
+                                                    {{ $value }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Nama Ekspedisi</label>
+                                        <input type="text" name="nama_ekspedisi" class="form-control" value="{{ $jenis_pengiriman->nama_ekspedisi }}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Ongkos Kirim</label>
+                                        <input type="number" name="ongkos_kirim" class="form-control" min="0" value="{{ $jenis_pengiriman->ongkos_kirim }}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Logo Ekspedisi</label>
+                                        <input type="file" name="logo_ekspedisi" class="form-control" accept="image/*">
+                                        @if($jenis_pengiriman->logo_ekspedisi)
+                                            <img src="{{ asset('storage/' . $jenis_pengiriman->logo_ekspedisi) }}" alt="Logo" width="80" class="mt-2">
+                                        @endif
+                                    </div>
+                                    <button class="btn btn-info">Update</button>
+                                    <a href="{{ route('jenis-pengiriman.index') }}" class="btn btn-secondary">Batal</a>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
