@@ -28,6 +28,7 @@ use App\Http\Controllers\MetodePembayaranController;
 use App\Http\Controllers\MidtransController;
 use App\Http\Controllers\JenisPengirimanController;
 use App\Http\Controllers\PengirimanController;
+use App\Http\Controllers\DataPemasukanController;
 
 
 
@@ -149,6 +150,7 @@ Route::middleware(['auth', RoleAuth::class . ':kasir'])->group(function () {
     Route::put('penjualan/{id}/approve', [PenjualanController::class, 'approve'])->name('penjualan.approve');
     Route::put('penjualan/{id}/reject', [PenjualanController::class, 'reject'])->name('penjualan.reject');
     Route::put('penjualan/{id}/keterangan', [PenjualanController::class, 'updateKeterangan'])->name('penjualan.updateKeterangan');
+    Route::get('data-pemasukan', [DataPemasukanController::class, 'index'])->name('data-pemasukan.index');
 });
 
 // Admin routes

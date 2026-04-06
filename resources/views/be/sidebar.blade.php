@@ -112,11 +112,18 @@
                         <p>Penjualan</p>
                     </a>
                 </li>
+                <li class="nav-item {{ Request::is('data-pemasukan*') ? 'active' : '' }}">
+                    <a href="{{ route('data-pemasukan.index') }}">
+                        <i class="la la-chart-line"></i>
+                        <p>Data Pemasukan</p>
+                    </a>
+                </li>
                 <li class="nav-item {{ Request::is('metode-bayar*') ? 'active' : '' }}">
                     <a href="{{ route('metode-bayar.index') }}">
                         <i class="la la-credit-card"></i>
                         <p>Metode Pembayaran</p>
                     </a>
+                </li>
             @endif
 
             @if (auth()->check() && auth()->user()->jabatan == 'karyawan')
