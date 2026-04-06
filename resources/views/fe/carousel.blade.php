@@ -26,7 +26,7 @@
             <!-- Eyebrow label -->
             <div class="hero-eyebrow">
                 <span class="hero-eyebrow__dot"></span>
-                Apotek Online Terpercaya #1 di Indonesia
+                Apotek Online Terpercaya
             </div>
 
             <!-- Main headline -->

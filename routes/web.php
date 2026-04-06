@@ -101,6 +101,12 @@ Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])
     ->middleware(['auth',  RoleAuth::class . ':admin'])
     ->name('admin');
 
+// Endpoint to query Midtrans for a single transaction status and update local order
+Route::get('/midtrans/status/{orderId}', [MidtransController::class, 'checkStatus'])->name('midtrans.status');
+
+// Get pengiriman information by order id (used by frontend pemesanan view)
+Route::get('/pengiriman/order/{orderId}', [App\Http\Controllers\PengirimanController::class, 'getByOrder'])->name('pengiriman.byOrder');
+
 Route::get('/karyawan', [App\Http\Controllers\KaryawanController::class, 'index'])
     ->middleware(['auth', RoleAuth::class . ':karyawan'])
     ->name('karywanan');
@@ -250,6 +256,9 @@ Route::post('/checkout/process-payment', [CheckoutController::class, 'processPay
 
 // RajaOngkir cost lookup
 Route::post('/rajaongkir/cost', [App\Http\Controllers\OngkirController::class, 'calculateCost'])->name('rajaongkir.cost');
+// RajaOngkir provinces and cities
+Route::get('/rajaongkir/province', [App\Http\Controllers\OngkirController::class, 'getProvinces'])->name('rajaongkir.province');
+Route::get('/rajaongkir/city', [App\Http\Controllers\OngkirController::class, 'getCities'])->name('rajaongkir.city');
 Route::post('/checkout/payment-callback', [CheckoutController::class, 'paymentCallback'])->name('checkout.payment.callback');
 // Route::post('/checkout/process-order', [CheckoutController::class, 'processOrder'])->name('checkout.processOrder');
 

@@ -22,6 +22,26 @@ class PengirimanController extends Controller
     }
 
     /**
+     * Return pengiriman data by penjualan id (order id).
+     */
+    public function getByOrder($orderId)
+    {
+        try {
+            $pengiriman = Pengiriman::with('penjualan')
+                ->where('id_penjualan', $orderId)
+                ->first();
+
+            if (!$pengiriman) {
+                return response()->json(['status' => 'not_found'], 404);
+            }
+
+            return response()->json(['status' => 'ok', 'data' => $pengiriman]);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create()

@@ -137,6 +137,12 @@
         border: 1.5px solid #0DCAF0;
     }
 
+    .status-sudahdibayar {
+        background: #E6FFEF;
+        color: #0DAF5A;
+        border: 1.5px solid #28a745;
+    }
+
     /* Filter dropdown styles */
     .filter-dropdown {
         background: #fff;
@@ -353,7 +359,7 @@
                 $isDibatalkan = in_array($order->status_order, ['Dibatalkan Pembeli', 'Dibatalkan Penjual']);
             @endphp
             @if(!request('status') || $order->status_order == request('status') || ($isDibatalkan && request('status') == 'Dibatalkan Pembeli'))
-            <div class="order-card-rounded">
+            <div class="order-card-rounded" data-order-no="{{ $order->no_pemesanan }}" data-order-id-local="{{ $order->id }}">
                 <div class="d-flex flex-wrap justify-content-between align-items-center px-4 order-header-rounded">
                     <div>
                         <span class="fw-bold" style="color:#0a6fa7;">
@@ -564,6 +570,12 @@
                                 </button>
                             </form>
                         @endif
+
+                        @if($order->status_order == 'Dikirim')
+                            <button type="button" class="btn btn-outline-primary" onclick="showPengiriman({{ $order->id }})">
+                                <i class="fas fa-truck me-2"></i> Lihat Pengiriman
+                            </button>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -580,7 +592,15 @@ function payWithMidtrans(orderId) {
     // Fix the fetch syntax error
     fetch(`/midtrans/token/${orderId}`)
         .then(response => response.json())
-        .then(data => {  // Remove => and fix the arrow function
+        .then(data => {
+            if (data.error) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Tidak Bisa Dibayar',
+                    text: data.error
+                });
+                return;
+            }
             if (data.snap_token) {
                 window.snap.pay(data.snap_token, {  // Add window. before snap
                     onSuccess: function(result) {
@@ -615,6 +635,99 @@ function payWithMidtrans(orderId) {
                 title: 'Oops...',
                 text: 'Terjadi kesalahan saat memproses pembayaran'
             });
+        });
+}
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // For each order card, check midtrans status and update UI accordingly
+    document.querySelectorAll('.order-card-rounded[data-order-no]').forEach(function(card) {
+        const orderNo = card.getAttribute('data-order-no');
+        if (!orderNo) return;
+
+        fetch(`/midtrans/status/${encodeURIComponent(orderNo)}`)
+            .then(res => res.json())
+            .then(data => {
+                const mt = (data.midtrans_status || '').toLowerCase();
+                const local = data.local_order || null;
+                if (mt === 'settlement' || mt === 'capture' || local === 'Sudah Dibayarkan') {
+                    // update status badge
+                    const statusSpan = card.querySelector('.status-badge');
+                    if (statusSpan) {
+                        statusSpan.className = 'status-badge status-sudahdibayar';
+                        statusSpan.innerHTML = '<i class="fas fa-check-circle"></i> Sudah Dibayar';
+                    }
+
+                    // replace pay button if present
+                    const payBtn = card.querySelector('.btn-order-action');
+                    if (payBtn) {
+                        const paidEl = document.createElement('span');
+                        paidEl.className = 'status-badge status-sudahdibayar';
+                        paidEl.innerHTML = '<i class="fas fa-check-circle"></i> Sudah Dibayar';
+                        payBtn.replaceWith(paidEl);
+                    }
+                }
+            })
+            .catch(err => console.error('Midtrans status check error', err));
+    });
+});
+</script>
+<!-- Pengiriman Modal -->
+<div class="modal fade" id="pengirimanModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detail Pengiriman</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="pengirimanContent">
+                    <p class="text-center text-muted">Memuat...</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function showPengiriman(orderId) {
+    const modalEl = document.getElementById('pengirimanModal');
+    const bsModal = new bootstrap.Modal(modalEl);
+    const content = document.getElementById('pengirimanContent');
+    content.innerHTML = '<p class="text-center text-muted">Memuat...</p>';
+    bsModal.show();
+
+    fetch(`/pengiriman/order/${orderId}`)
+        .then(res => {
+            if (!res.ok) throw res;
+            return res.json();
+        })
+        .then(json => {
+            if (json.status !== 'ok') {
+                content.innerHTML = '<div class="alert alert-warning">Data pengiriman tidak ditemukan.</div>';
+                return;
+            }
+            const p = json.data;
+            const html = `
+                <dl class="row">
+                    <dt class="col-sm-4">No Invoice</dt><dd class="col-sm-8">${p.no_invoice}</dd>
+                    <dt class="col-sm-4">No Resi</dt><dd class="col-sm-8">${p.no_resi}</dd>
+                    <dt class="col-sm-4">Tanggal Kirim</dt><dd class="col-sm-8">${p.tgl_kirim}</dd>
+                    <dt class="col-sm-4">Tanggal Tiba</dt><dd class="col-sm-8">${p.tgl_tiba}</dd>
+                    <dt class="col-sm-4">Status Kirim</dt><dd class="col-sm-8">${p.status_kirim}</dd>
+                    <dt class="col-sm-4">Nama Kurir</dt><dd class="col-sm-8">${p.nama_kurir}</dd>
+                    <dt class="col-sm-4">Telpon Kurir</dt><dd class="col-sm-8">${p.telpon_kurir}</dd>
+                    <dt class="col-sm-4">Keterangan</dt><dd class="col-sm-8">${p.keterangan || '-'}</dd>
+                </dl>
+            `;
+            content.innerHTML = html;
+        })
+        .catch(err => {
+            console.error('Fetch pengiriman error', err);
+            content.innerHTML = '<div class="alert alert-danger">Gagal memuat data pengiriman.</div>';
         });
 }
 </script>

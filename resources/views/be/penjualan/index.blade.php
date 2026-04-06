@@ -4,6 +4,9 @@
 @endsection
 
 @section('content')
+<style>
+    /* Removed disabled styling - buttons always active until clicked */
+</style>
 <div class="pcoded-content">
     <div class="pcoded-inner-content">
         <div class="main-body">
@@ -34,7 +37,7 @@
                                     </thead>
                                     <tbody>
                                         @forelse($penjualan as $index => $item)
-                                            <tr>
+                                            <tr data-order-no="{{ $item->no_pemesanan }}">
                                                 <td>{{ $index + 1 }}</td>
                                                 <td>{{ $item->no_pemesanan }}</td>
                                                 <td>{{ $item->pelanggan->nama_pelanggan ?? '-' }}</td>
@@ -49,11 +52,10 @@
                                                             'Dibatalkan Pembeli', 'Dibatalkan Penjual' => 'badge bg-danger text-white',
                                                             default => 'badge bg-secondary'
                                                         };
+                                                        // Treat 'Sudah Dibayarkan' and processed/finished as paid
+                                                        $paid = in_array($item->status_order, ['Sudah Dibayarkan', 'Diproses', 'Selesai']);
                                                     @endphp
                                                     <span class="{{ $statusClass }}">{{ $item->status_order }}</span>
-                                                    @php
-                                                        $paid = in_array($item->status_order, ['Diproses', 'Selesai']);
-                                                    @endphp
                                                     <br>
                                                     <span class="badge {{ $paid ? 'bg-success text-white' : 'bg-secondary text-white' }} mt-2">
                                                         {{ $paid ? 'Sudah Dibayarkan' : 'Belum Dibayarkan' }}
@@ -72,22 +74,25 @@
                                                 <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
                                                 <td>
                                                     <div class="btn-group" role="group">
-                                                        @if($item->status_order === 'Menunggu Konfirmasi')
-                                                            <form action="{{ route('penjualan.approve', $item->id) }}" method="POST" class="d-inline form-approve">
-                                                                @csrf
-                                                                @method('PUT')
-                                                                <button type="button" class="btn btn-success btn-sm btn-approve">
-                                                                    <i class="fas fa-check"></i>
-                                                                </button>
-                                                            </form>
-                                                            <form action="{{ route('penjualan.reject', $item->id) }}" method="POST" class="d-inline form-reject">
-                                                                @csrf
-                                                                @method('PUT')
-                                                                <button type="button" class="btn btn-danger btn-sm btn-reject">
-                                                                    <i class="fas fa-times"></i>
-                                                                </button>
-                                                            </form>
-                                                        @endif
+                                                        @php
+                                                            $isPaid = in_array($item->status_order, ['Sudah Dibayarkan', 'Diproses', 'Selesai']);
+                                                        @endphp
+
+                                                        <form action="{{ route('penjualan.approve', $item->id) }}" method="POST" class="d-inline form-approve">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <button type="button" class="btn btn-success btn-sm btn-approve">
+                                                                <i class="fas fa-check"></i>
+                                                            </button>
+                                                        </form>
+
+                                                        <form action="{{ route('penjualan.reject', $item->id) }}" method="POST" class="d-inline form-reject">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <button type="button" class="btn btn-danger btn-sm btn-reject">
+                                                                <i class="fas fa-times"></i>
+                                                            </button>
+                                                        </form>
                                                         <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#detailModal{{ $item->id }}">
                                                             <i class="fas fa-eye"></i> Detail
                                                         </button>
@@ -284,6 +289,7 @@
                     cancelButtonText: 'Batal'
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        btn.disabled = true;
                         form.submit();
                     }
                 });
@@ -305,10 +311,41 @@
                     cancelButtonText: 'Batal'
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        btn.disabled = true;
                         form.submit();
                     }
                 });
             });
+        });
+
+        // Check Midtrans status for listed orders and update status/badges
+        document.querySelectorAll('tr[data-order-no]').forEach(function(row) {
+            const orderNo = row.getAttribute('data-order-no');
+            if (!orderNo) return;
+
+            fetch(`/midtrans/status/${encodeURIComponent(orderNo)}`)
+                .then(res => res.json())
+                .then(data => {
+                    const mt = (data.midtrans_status || '').toLowerCase();
+                    if (mt === 'settlement' || mt === 'capture' || (data.local_order === 'Sudah Dibayarkan')) {
+                        // Update status column (5th td)
+                        const tds = row.querySelectorAll('td');
+                        if (tds && tds[4]) {
+                            tds[4].innerHTML = '';
+                            const statusSpan = document.createElement('span');
+                            statusSpan.className = 'badge bg-success text-white';
+                            statusSpan.textContent = 'Sudah Dibayarkan';
+                            tds[4].appendChild(statusSpan);
+                        }
+
+                        // Enable approve/reject buttons so admin can act on paid orders
+                        row.querySelectorAll('.btn-approve, .btn-reject').forEach(function(b) {
+                            b.disabled = false;
+                            b.classList.remove('disabled');
+                        });
+                    }
+                })
+                .catch(err => console.error('Midtrans status check error', err));
         });
     });
 </script>
