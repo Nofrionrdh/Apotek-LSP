@@ -429,6 +429,13 @@
                                         <i class="fas fa-credit-card me-1"></i>
                                         {{ $order->metodeBayar->metode_pembayaran ?? '-' }}
                                     </span>
+                                    @php
+                                        $paid = in_array($order->status_order, ['Diproses', 'Selesai']);
+                                    @endphp
+                                    <br>
+                                    <span class="badge {{ $paid ? 'bg-success text-white' : 'bg-secondary text-white' }} mt-2">
+                                        {{ $paid ? 'Sudah Dibayarkan' : 'Belum Dibayarkan' }}
+                                    </span>
                                 </td>
                                 <td>
                                     @php

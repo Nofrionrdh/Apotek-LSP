@@ -247,6 +247,9 @@ Route::get('/pengiriman/{id}/show', [App\Http\Controllers\PengirimanController::
 
 // Tambahkan route untuk proses pembayaran
 Route::post('/checkout/process-payment', [CheckoutController::class, 'processPayment'])->name('checkout.processPayment');
+
+// RajaOngkir cost lookup
+Route::post('/rajaongkir/cost', [App\Http\Controllers\OngkirController::class, 'calculateCost'])->name('rajaongkir.cost');
 Route::post('/checkout/payment-callback', [CheckoutController::class, 'paymentCallback'])->name('checkout.payment.callback');
 // Route::post('/checkout/process-order', [CheckoutController::class, 'processOrder'])->name('checkout.processOrder');
 

@@ -51,6 +51,13 @@
                                                         };
                                                     @endphp
                                                     <span class="{{ $statusClass }}">{{ $item->status_order }}</span>
+                                                    @php
+                                                        $paid = in_array($item->status_order, ['Diproses', 'Selesai']);
+                                                    @endphp
+                                                    <br>
+                                                    <span class="badge {{ $paid ? 'bg-success text-white' : 'bg-secondary text-white' }} mt-2">
+                                                        {{ $paid ? 'Sudah Dibayarkan' : 'Belum Dibayarkan' }}
+                                                    </span>
                                                 </td>
                                                 <td>
                                                     <div class="d-flex align-items-center">

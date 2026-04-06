@@ -6,258 +6,338 @@
     <title>Profile | {{ $pelanggan->nama_pelanggan }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        body {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            min-height: 100vh;
-            padding-top: 2rem;
-        }
-        .profile-header {
-            background: linear-gradient(135deg, #0dcaf0 0%, #0d6efd 100%);
-            padding: 2rem 1rem;
-            margin-bottom: 2rem;
-            border-radius: 1rem;
-            color: white;
-            box-shadow: 0 4px 15px rgba(13, 202, 240, 0.2);
-        }
-        .back-button {
-            position: fixed;
-            top: 1rem;
-            left: 1rem;
-            color: #0dcaf0;
-            text-decoration: none;
-            font-size: 1.2rem;
-            background: white;
-            padding: 0.5rem 1rem;
-            border-radius: 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        }
-        .back-button:hover {
-            transform: translateX(-5px);
-            color: #0d6efd;
-            box-shadow: 0 4px 15px rgba(13, 110, 253, 0.2);
-        }
-        .card {
-            border-radius: 1rem;
-            border: none;
-            box-shadow: 0 4px 25px rgba(0,0,0,0.1);
-        }
-        .card-body {
-            padding: 2rem;
-        }
-        .form-control {
-            border-radius: 0.75rem;
-            padding: 0.75rem 1rem;
-            border: 2px solid #e9ecef;
-            transition: all 0.3s ease;
-        }
-        .form-control:focus {
-            border-color: #0dcaf0;
-            box-shadow: 0 0 0 0.25rem rgba(13, 202, 240, 0.25);
-        }
-        .btn-info {
-            border-radius: 0.75rem;
-            padding: 0.75rem 2rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        .btn-info:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(13, 202, 240, 0.4);
-        }
-        .profile-image {
-            position: relative;
-            display: inline-block;
-        }
-        .profile-image img {
-            width: 120px;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 3px solid white;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        .profile-image input[type="file"] {
-            display: none;
-        }
-        .profile-upload-label {
-            margin-top: 0.5rem;
-            display: inline-block;
-            padding: 0.25rem 1rem;
-            background: #0dcaf0;
-            color: white;
-            border-radius: 1rem;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .profile-upload-label:hover {
-            background: #0d6efd;
-        }
-        .section-title {
-            color: #0dcaf0;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid #e9ecef;
-        }
-        .form-label {
-            font-weight: 500;
-            color: #495057;
-        }
-        .form-text {
-            color: #6c757d;
-            font-size: 0.875rem;
-        }
-        hr {
-            margin: 2rem 0;
-            opacity: 0.1;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('fe/css/style.css') }}">
 </head>
-<body>
-    <a href="/" class="back-button">
-        <i class="fas fa-arrow-left"></i> Kembali ke Beranda
+<body class="prf-body">
+
+    {{-- Back button --}}
+    <a href="/" class="prf-back-btn">
+        <i class="fas fa-arrow-left"></i>
+        <span>Beranda</span>
     </a>
 
-    <div class="container py-5">
-        <div class="profile-header text-center mb-4">
-            <h2>Profil Saya</h2>
+    {{-- ===== Page Hero ===== --}}
+    <div class="prf-hero">
+        <div class="prf-hero__bg-orb prf-hero__bg-orb--1"></div>
+        <div class="prf-hero__bg-orb prf-hero__bg-orb--2"></div>
+        <div class="prf-hero__grid"></div>
+        <div class="container position-relative" style="z-index:2;">
+            <div class="prf-hero__content">
+                <div class="prf-hero__avatar-wrap">
+                    <img src="{{ $pelanggan->foto ? asset('storage/'.$pelanggan->foto) : asset('fe/img/default-profile.png') }}"
+                         alt="Foto Profil"
+                         class="prf-hero__avatar"
+                         id="preview-foto">
+                    <div class="prf-hero__avatar-online"></div>
+                </div>
+                <div class="prf-hero__info">
+                    <div class="prf-hero__eyebrow">
+                        <span class="prf-hero__eyebrow-dot"></span>
+                        Akun Pelanggan
+                    </div>
+                    <h1 class="prf-hero__name">{{ $pelanggan->nama_pelanggan }}</h1>
+                    <p class="prf-hero__email"><i class="fas fa-envelope me-2"></i>{{ $pelanggan->email }}</p>
+                </div>
+            </div>
         </div>
-        
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
+    </div>
+
+    {{-- ===== Form Area ===== --}}
+    <div class="prf-main">
+        <div class="container">
+            <div class="prf-layout">
+
+                {{-- Success alert --}}
                 @if(session('success'))
-                    <div class="alert alert-success">
+                    <div class="prf-alert prf-alert--success">
+                        <i class="fas fa-check-circle prf-alert__icon"></i>
                         {{ session('success') }}
                     </div>
                 @endif
-                
-                <div class="card shadow-sm border-0">
-                    <div class="card-body p-4">
-                        <form action="{{ route('profile.update', $pelanggan->id) }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            @method('PUT')
-                            <div class="row mb-4 align-items-center">
-                                <div class="col-md-3 text-center">
-                                    <div class="profile-image">
+
+                <form action="{{ route('profile.update', $pelanggan->id) }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+
+                    {{-- ===== SECTION: Info Dasar ===== --}}
+                    <div class="prf-card">
+                        <div class="prf-card__header">
+                            <span class="prf-card__header-icon"><i class="fas fa-user"></i></span>
+                            <h2 class="prf-card__title">Informasi Dasar</h2>
+                        </div>
+                        <div class="prf-card__body">
+                            <div class="prf-avatar-row">
+                                {{-- Photo upload --}}
+                                <div class="prf-photo-block">
+                                    <div class="prf-photo-block__img-wrap">
                                         <img src="{{ $pelanggan->foto ? asset('storage/'.$pelanggan->foto) : asset('fe/img/default-profile.png') }}"
-                                            alt="Foto Profil" id="preview-foto">
-                                        <label for="foto-input" class="profile-upload-label">
-                                            <i class="fas fa-camera"></i> Pilih Foto
+                                             alt="Foto Profil"
+                                             class="prf-photo-block__img"
+                                             id="preview-foto-2">
+                                        <label for="foto-input" class="prf-photo-block__overlay">
+                                            <i class="fas fa-camera"></i>
+                                            <span>Ganti Foto</span>
                                         </label>
-                                        <input type="file" id="foto-input" name="foto" accept="image/*" onchange="previewImage(this)">
+                                        <input type="file" id="foto-input" name="foto" accept="image/*" onchange="previewImage(this)" style="display:none;">
                                     </div>
-                                    <small class="text-muted d-block mt-2">Format: jpg, png. Maks 2MB.</small>
+                                    <p class="prf-photo-block__hint">JPG, PNG · Maks 2MB</p>
                                 </div>
-                                <div class="col-md-9">
-                                    <div class="mb-3">
-                                        <label class="form-label">Nama Lengkap</label>
-                                        <input type="text" name="nama_pelanggan" class="form-control" value="{{ old('nama_pelanggan', $pelanggan->nama_pelanggan) }}" required>
+
+                                {{-- Fields --}}
+                                <div class="prf-fields-col">
+                                    <div class="prf-field">
+                                        <label class="prf-field__label" for="nama_pelanggan">Nama Lengkap</label>
+                                        <div class="prf-field__wrap">
+                                            <span class="prf-field__icon"><i class="fas fa-user"></i></span>
+                                            <input type="text" id="nama_pelanggan" name="nama_pelanggan"
+                                                   class="prf-field__input"
+                                                   value="{{ old('nama_pelanggan', $pelanggan->nama_pelanggan) }}"
+                                                   required>
+                                        </div>
                                     </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Email</label>
-                                        <input type="email" name="email" class="form-control" value="{{ old('email', $pelanggan->email) }}" required>
+                                    <div class="prf-field">
+                                        <label class="prf-field__label" for="email">Email</label>
+                                        <div class="prf-field__wrap">
+                                            <span class="prf-field__icon"><i class="fas fa-envelope"></i></span>
+                                            <input type="email" id="email" name="email"
+                                                   class="prf-field__input"
+                                                   value="{{ old('email', $pelanggan->email) }}"
+                                                   required>
+                                        </div>
                                     </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">No. Telepon</label>
-                                        <input type="text" name="no_telp" class="form-control" value="{{ old('no_telp', $pelanggan->no_telp) }}">
+                                    <div class="prf-field">
+                                        <label class="prf-field__label" for="no_telp">No. Telepon</label>
+                                        <div class="prf-field__wrap">
+                                            <span class="prf-field__icon"><i class="fas fa-phone"></i></span>
+                                            <input type="text" id="no_telp" name="no_telp"
+                                                   class="prf-field__input"
+                                                   value="{{ old('no_telp', $pelanggan->no_telp) }}">
+                                        </div>
                                     </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Kata Kunci (Password)</label>
-                                        <input type="password" name="katakunci" class="form-control" placeholder="Isi jika ingin mengganti password">
+                                    <div class="prf-field">
+                                        <label class="prf-field__label" for="katakunci">
+                                            Password
+                                            <span class="prf-field__label-hint">Kosongkan jika tidak ingin mengubah</span>
+                                        </label>
+                                        <div class="prf-field__wrap">
+                                            <span class="prf-field__icon"><i class="fas fa-lock"></i></span>
+                                            <input type="password" id="katakunci" name="katakunci"
+                                                   class="prf-field__input prf-field__input--pw"
+                                                   placeholder="Isi jika ingin mengganti password">
+                                            <button type="button" class="prf-field__toggle-pw" id="togglePw">
+                                                <i class="fas fa-eye" id="togglePwIcon"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <hr>
-                            <h5 class="mb-3 text-info section-title">Alamat Utama</h5>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Alamat</label>
-                                    <input type="text" name="alamat1" class="form-control" value="{{ old('alamat1', $pelanggan->alamati) }}" required>
+                        </div>
+                    </div>
+
+                    {{-- ===== SECTION: Alamat Utama ===== --}}
+                    <div class="prf-card">
+                        <div class="prf-card__header">
+                            <span class="prf-card__header-icon"><i class="fas fa-map-marker-alt"></i></span>
+                            <h2 class="prf-card__title">Alamat Utama</h2>
+                            <span class="prf-card__header-badge prf-card__header-badge--primary">Wajib</span>
+                        </div>
+                        <div class="prf-card__body">
+                            <div class="prf-grid-2">
+                                <div class="prf-field prf-field--full">
+                                    <label class="prf-field__label">Alamat</label>
+                                    <div class="prf-field__wrap">
+                                        <span class="prf-field__icon"><i class="fas fa-home"></i></span>
+                                        <input type="text" name="alamat1" class="prf-field__input"
+                                               value="{{ old('alamat1', $pelanggan->alamati) }}" required>
+                                    </div>
                                 </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Kota</label>
-                                    <input type="text" name="kota1" class="form-control" value="{{ old('kota1', $pelanggan->kota1) }}" required>
+                                <div class="prf-field">
+                                    <label class="prf-field__label">Kota</label>
+                                    <div class="prf-field__wrap">
+                                        <span class="prf-field__icon"><i class="fas fa-city"></i></span>
+                                        <input type="text" name="kota1" class="prf-field__input"
+                                               value="{{ old('kota1', $pelanggan->kota1) }}" required>
+                                    </div>
                                 </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Provinsi</label>
-                                    <input type="text" name="propinsi1" class="form-control" value="{{ old('propinsi1', $pelanggan->propinsti) }}" required>
+                                <div class="prf-field">
+                                    <label class="prf-field__label">Provinsi</label>
+                                    <div class="prf-field__wrap">
+                                        <span class="prf-field__icon"><i class="fas fa-map"></i></span>
+                                        <input type="text" name="propinsi1" class="prf-field__input"
+                                               value="{{ old('propinsi1', $pelanggan->propinsti) }}" required>
+                                    </div>
                                 </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Kode Pos</label>
-                                    <input type="text" name="kodepos1" class="form-control" value="{{ old('kodepos1', $pelanggan->kodepos1) }}" required>
-                                </div>
-                            </div>
-                            <hr>
-                            <h5 class="mb-3 text-info section-title">Alamat Lainnya</h5>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Alamat 2</label>
-                                    <input type="text" name="alamat2" class="form-control" value="{{ old('alamat2', $pelanggan->alamai2) }}">
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Kota 2</label>
-                                    <input type="text" name="kota2" class="form-control" value="{{ old('kota2', $pelanggan->kota2) }}">
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Provinsi 2</label>
-                                    <input type="text" name="propinsi2" class="form-control" value="{{ old('propinsi2', $pelanggan->propinsi2) }}">
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Kode Pos 2</label>
-                                    <input type="text" name="kodepos2" class="form-control" value="{{ old('kodepos2', $pelanggan->kodepos2) }}">
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Alamat 3</label>
-                                    <input type="text" name="alamat3" class="form-control" value="{{ old('alamat3', $pelanggan->alamai3) }}">
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Kota 3</label>
-                                    <input type="text" name="kota3" class="form-control" value="{{ old('kota3', $pelanggan->kota3) }}">
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Provinsi 3</label>
-                                    <input type="text" name="propinsi3" class="form-control" value="{{ old('propinsi3', $pelanggan->propinsi3) }}">
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Kode Pos 3</label>
-                                    <input type="text" name="kodepos3" class="form-control" value="{{ old('kodepos3', $pelanggan->kodepos3) }}">
+                                <div class="prf-field">
+                                    <label class="prf-field__label">Kode Pos</label>
+                                    <div class="prf-field__wrap">
+                                        <span class="prf-field__icon"><i class="fas fa-mail-bulk"></i></span>
+                                        <input type="text" name="kodepos1" class="prf-field__input"
+                                               value="{{ old('kodepos1', $pelanggan->kodepos1) }}" required>
+                                    </div>
                                 </div>
                             </div>
-                            <hr>
-                            <div class="mb-3">
-                                <label class="form-label">KTP</label>
-                                <input type="file" name="url_ktp" class="form-control" accept="image/*">
-                                <small class="text-muted">Format: jpg, png. Maks 2MB.</small>
+                        </div>
+                    </div>
+
+                    {{-- ===== SECTION: Alamat Lainnya ===== --}}
+                    <div class="prf-card">
+                        <div class="prf-card__header">
+                            <span class="prf-card__header-icon"><i class="fas fa-map-marked-alt"></i></span>
+                            <h2 class="prf-card__title">Alamat Lainnya</h2>
+                            <span class="prf-card__header-badge">Opsional</span>
+                        </div>
+                        <div class="prf-card__body">
+                            {{-- Alamat 2 --}}
+                            <div class="prf-address-group">
+                                <div class="prf-address-group__label">Alamat 2</div>
+                                <div class="prf-grid-2">
+                                    <div class="prf-field prf-field--full">
+                                        <label class="prf-field__label">Alamat</label>
+                                        <div class="prf-field__wrap">
+                                            <span class="prf-field__icon"><i class="fas fa-home"></i></span>
+                                            <input type="text" name="alamat2" class="prf-field__input"
+                                                   value="{{ old('alamat2', $pelanggan->alamai2) }}">
+                                        </div>
+                                    </div>
+                                    <div class="prf-field">
+                                        <label class="prf-field__label">Kota</label>
+                                        <div class="prf-field__wrap">
+                                            <span class="prf-field__icon"><i class="fas fa-city"></i></span>
+                                            <input type="text" name="kota2" class="prf-field__input"
+                                                   value="{{ old('kota2', $pelanggan->kota2) }}">
+                                        </div>
+                                    </div>
+                                    <div class="prf-field">
+                                        <label class="prf-field__label">Provinsi</label>
+                                        <div class="prf-field__wrap">
+                                            <span class="prf-field__icon"><i class="fas fa-map"></i></span>
+                                            <input type="text" name="propinsi2" class="prf-field__input"
+                                                   value="{{ old('propinsi2', $pelanggan->propinsi2) }}">
+                                        </div>
+                                    </div>
+                                    <div class="prf-field">
+                                        <label class="prf-field__label">Kode Pos</label>
+                                        <div class="prf-field__wrap">
+                                            <span class="prf-field__icon"><i class="fas fa-mail-bulk"></i></span>
+                                            <input type="text" name="kodepos2" class="prf-field__input"
+                                                   value="{{ old('kodepos2', $pelanggan->kodepos2) }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="prf-address-divider"></div>
+
+                            {{-- Alamat 3 --}}
+                            <div class="prf-address-group">
+                                <div class="prf-address-group__label">Alamat 3</div>
+                                <div class="prf-grid-2">
+                                    <div class="prf-field prf-field--full">
+                                        <label class="prf-field__label">Alamat</label>
+                                        <div class="prf-field__wrap">
+                                            <span class="prf-field__icon"><i class="fas fa-home"></i></span>
+                                            <input type="text" name="alamat3" class="prf-field__input"
+                                                   value="{{ old('alamat3', $pelanggan->alamai3) }}">
+                                        </div>
+                                    </div>
+                                    <div class="prf-field">
+                                        <label class="prf-field__label">Kota</label>
+                                        <div class="prf-field__wrap">
+                                            <span class="prf-field__icon"><i class="fas fa-city"></i></span>
+                                            <input type="text" name="kota3" class="prf-field__input"
+                                                   value="{{ old('kota3', $pelanggan->kota3) }}">
+                                        </div>
+                                    </div>
+                                    <div class="prf-field">
+                                        <label class="prf-field__label">Provinsi</label>
+                                        <div class="prf-field__wrap">
+                                            <span class="prf-field__icon"><i class="fas fa-map"></i></span>
+                                            <input type="text" name="propinsi3" class="prf-field__input"
+                                                   value="{{ old('propinsi3', $pelanggan->propinsi3) }}">
+                                        </div>
+                                    </div>
+                                    <div class="prf-field">
+                                        <label class="prf-field__label">Kode Pos</label>
+                                        <div class="prf-field__wrap">
+                                            <span class="prf-field__icon"><i class="fas fa-mail-bulk"></i></span>
+                                            <input type="text" name="kodepos3" class="prf-field__input"
+                                                   value="{{ old('kodepos3', $pelanggan->kodepos3) }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- ===== SECTION: KTP ===== --}}
+                    <div class="prf-card">
+                        <div class="prf-card__header">
+                            <span class="prf-card__header-icon"><i class="fas fa-id-card"></i></span>
+                            <h2 class="prf-card__title">KTP</h2>
+                            <span class="prf-card__header-badge">Opsional</span>
+                        </div>
+                        <div class="prf-card__body">
+                            <div class="prf-ktp">
+                                <div class="prf-field">
+                                    <label class="prf-field__label">Upload KTP</label>
+                                    <div class="prf-field__wrap">
+                                        <span class="prf-field__icon"><i class="fas fa-cloud-upload-alt"></i></span>
+                                        <input type="file" name="url_ktp" class="prf-field__input" accept="image/*">
+                                    </div>
+                                    <p class="prf-field__hint">Format: JPG, PNG · Maks 2MB</p>
+                                </div>
                                 @if($pelanggan->url_ktp)
-                                    <div class="mt-2">
-                                        <img src="{{ asset('storage/'.$pelanggan->url_ktp) }}" alt="KTP" style="max-width: 200px">
+                                    <div class="prf-ktp__preview">
+                                        <p class="prf-ktp__preview-label">KTP Terdaftar</p>
+                                        <img src="{{ asset('storage/'.$pelanggan->url_ktp) }}"
+                                             alt="KTP" class="prf-ktp__img">
                                     </div>
                                 @endif
                             </div>
-                            <div class="text-end">
-                                <button type="submit" class="btn btn-info px-4">Simpan Perubahan</button>
-                            </div>
-                        </form>
+                        </div>
                     </div>
-                </div>
+
+                    {{-- Submit --}}
+                    <div class="prf-submit-row">
+                        <button type="submit" class="prf-submit-btn">
+                            <i class="fas fa-save me-2"></i>
+                            Simpan Perubahan
+                            <i class="fas fa-arrow-right prf-submit-btn__arrow"></i>
+                        </button>
+                    </div>
+
+                </form>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-    function previewImage(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('preview-foto').src = e.target.result;
+        // Preview foto — update both hero & card avatar
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('preview-foto').src   = e.target.result;
+                    document.getElementById('preview-foto-2').src = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
             }
-            reader.readAsDataURL(input.files[0]);
         }
-    }
+
+        // Toggle password visibility
+        document.getElementById('togglePw').addEventListener('click', function () {
+            const input = document.getElementById('katakunci');
+            const icon  = document.getElementById('togglePwIcon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        });
     </script>
 </body>
 </html>
