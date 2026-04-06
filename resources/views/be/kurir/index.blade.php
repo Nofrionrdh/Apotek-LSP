@@ -36,7 +36,20 @@
                             <td>{{ $i+1 }}</td>
                             <td>{{ $item->no_invoice }}</td>
                             <td>{{ $item->no_resi }}</td>
-                            <td>{{ $item->penjualan->no_pemesanan ?? '-' }}</td>
+                            <td>
+                                {{ $item->penjualan->no_pemesanan ?? '-' }}
+                                <br>
+                                <small class="text-muted">
+                                    @if($item->penjualan && $item->penjualan->pelanggan)
+                                        {{ $item->penjualan->pelanggan->alamat1 ?? '' }}
+                                        {{ $item->penjualan->pelanggan->kota1 ? ', ' . $item->penjualan->pelanggan->kota1 : '' }}
+                                        {{ $item->penjualan->pelanggan->propinsi1 ? ', ' . $item->penjualan->pelanggan->propinsi1 : '' }}
+                                        {{ $item->penjualan->pelanggan->kodepos1 ? ' - ' . $item->penjualan->pelanggan->kodepos1 : '' }}
+                                    @else
+                                        -
+                                    @endif
+                                </small>
+                            </td>
                             <td>{{ $item->tgl_kirim }}</td>
                             <td>{{ $item->tgl_tiba }}</td>
                             <td>

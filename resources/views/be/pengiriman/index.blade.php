@@ -48,6 +48,14 @@
                                                     <small class="text-muted">
                                                         {{ $item->penjualan && $item->penjualan->pelanggan ? $item->penjualan->pelanggan->nama_pelanggan : '-' }}
                                                     </small>
+                                                        @if($item->penjualan && $item->penjualan->pelanggan)
+                                                            {{ $item->penjualan->pelanggan->alamat1 ?? '' }}
+                                                            {{ $item->penjualan->pelanggan->kota1 ? ', ' . $item->penjualan->pelanggan->kota1 : '' }}
+                                                            {{ $item->penjualan->pelanggan->propinsi1 ? ', ' . $item->penjualan->pelanggan->propinsi1 : '' }}
+                                                            {{ $item->penjualan->pelanggan->kodepos1 ? ' - ' . $item->penjualan->pelanggan->kodepos1 : '' }}
+                                                        @else
+                                                            -
+                                                        @endif
                                                 </td>
                                                 <td>{{ $item->tgl_kirim }}</td>
                                                 <td>{{ $item->tgl_tiba }}</td>
