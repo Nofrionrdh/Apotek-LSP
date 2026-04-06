@@ -3,7 +3,7 @@
         <!-- Logo -->
         <a href="/" class="navbar-logo">
             <span class="navbar-logo__icon">
-                <i class="fa-solid fa-pills"></i>
+                <i class="fas fa-plus-square"></i>
             </span>
             <span class="navbar-logo__text">Medi<span class="navbar-logo__accent">care</span></span>
         </a>

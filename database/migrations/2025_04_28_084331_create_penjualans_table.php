@@ -18,7 +18,7 @@ return new class extends Migration
             ->onDelete('cascade')->onUpdate('cascade');
             $table->string('no_pemesanan')->unique();
             $table->date('tgl_penjualan');
-            $table->string('url_resep');
+            $table->string('url_resep')->nullable();
             $table->double('ongkos_kirim');
             $table->double('biaya_app');
             $table->double('total_bayar');

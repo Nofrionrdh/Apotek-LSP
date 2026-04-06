@@ -1,137 +1,162 @@
 <!doctype html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="favicon.ico">
-    <title>Register</title>
-    <!-- Simple bar CSS -->
+    <meta name="description" content="Medicare - Apotek Online Terpercaya">
+    <title>Register — Medicare</title>
     <link rel="stylesheet" href="{{ asset('auth/css/simplebar.css') }}">
-    <!-- Fonts CSS -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet">
-    <!-- Icons CSS -->
     <link rel="stylesheet" href="{{ asset('auth/css/feather.css') }}">
-    <!-- Date Range Picker CSS -->
     <link rel="stylesheet" href="{{ asset('auth/css/daterangepicker.css') }}">
-    <!-- App CSS -->
     <link rel="stylesheet" href="{{ asset('auth/css/app-light.css') }}" id="lightTheme">
     <link rel="stylesheet" href="{{ asset('auth/css/app-dark.css') }}" id="darkTheme" disabled>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('auth/css/style.css') }}">
 </head>
-
-<body class="light ">
-    <div class="wrapper vh-100">
-        <div class="row align-items-center h-100">
-            <form class="col-lg-6 col-md-8 col-10 mx-auto" action="{{ route('register-user') }}" method="POST">
-                @csrf
-                <div class="mx-auto text-center my-4">
-                    <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="/">
-                        <div class="d-flex flex-column align-items-center mb-4">
-                            <h1 style="font-size: 2.5rem; font-weight: 700; background: linear-gradient(45deg, #0dcaf0, #0d6efd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem;">
-                                Medicare
-                            </h1>
-                            <span class="fs-6" style="color: #0dcaf0; margin-top: -0.5rem;">Apotek Online Terpercaya</span>
-                        </div>
-                    </a>
-                    <h2 class="my-3">Register</h2>
+<body class="light login-page-body">
+    <div class="login-page">
+        {{-- ===== Left Panel (branding) ===== --}}
+        <div class="login-panel">
+            <div class="login-panel__bg-orb login-panel__bg-orb--1"></div>
+            <div class="login-panel__bg-orb login-panel__bg-orb--2"></div>
+            <div class="login-panel__grid"></div>
+            <div class="login-panel__content">
+                <a href="/" class="login-panel__logo">
+                    <span class="login-panel__logo-icon">
+                        <i class="fas fa-plus-square"></i>
+                    </span>
+                    <span class="login-panel__logo-text">Medi<span class="login-panel__logo-accent">care</span></span>
+                </a>
+                <h2 class="login-panel__tagline">Kesehatan Anda,<br>Prioritas Kami.</h2>
+                <p class="login-panel__sub">Akun khusus untuk Admin, Apoteker, Kasir, Karyawan, dan Staff internal Medicare.</p>
+                <div class="login-panel__stats">
+                    <div class="login-panel__stat">
+                        <div class="login-panel__stat-num">50K+</div>
+                        <div class="login-panel__stat-label">Pelanggan</div>
+                    </div>
+                    <div class="login-panel__stat-divider"></div>
+                    <div class="login-panel__stat">
+                        <div class="login-panel__stat-num">2.000+</div>
+                        <div class="login-panel__stat-label">Produk</div>
+                    </div>
+                    <div class="login-panel__stat-divider"></div>
+                    <div class="login-panel__stat">
+                        <div class="login-panel__stat-num">4.9★</div>
+                        <div class="login-panel__stat-label">Rating</div>
+                    </div>
+                </div>
+                <div class="login-panel__features">
+                    <div class="login-panel__feat">
+                        <span class="login-panel__feat-icon"><i class="fas fa-shield-alt"></i></span>
+                        <span>Produk 100% Asli & BPOM</span>
+                    </div>
+                    <div class="login-panel__feat">
+                        <span class="login-panel__feat-icon"><i class="fas fa-shipping-fast"></i></span>
+                        <span>Pengiriman Same-Day</span>
+                    </div>
+                    <div class="login-panel__feat">
+                        <span class="login-panel__feat-icon"><i class="fas fa-headset"></i></span>
+                        <span>Apoteker Online 24/7</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- ===== Right Panel (form) ===== --}}
+        <div class="login-form-panel">
+            <div class="login-form-wrap">
+                <a href="/" class="login-form-wrap__mobile-logo">
+                    <span class="login-panel__logo-icon login-panel__logo-icon--sm">
+                        <i class="fas fa-plus-square"></i>
+                    </span>
+                    <span class="login-panel__logo-text login-panel__logo-text--dark">Medi<span class="login-panel__logo-accent">care</span></span>
+                </a>
+                <div class="login-form-wrap__heading">
+                    <h1 class="login-form-wrap__title">Registrasi Akun Admin/Staff</h1>
+                    <p class="login-form-wrap__subtitle">Buat akun khusus untuk Admin, Apoteker, Kasir, Karyawan, atau Staff internal Medicare</p>
                 </div>
                 @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
+                    <div class="login-alert">
+                        <i class="fas fa-exclamation-circle login-alert__icon"></i>
+                        <div>
                             @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
+                                <div>{{ $error }}</div>
                             @endforeach
-                        </ul>
+                        </div>
                     </div>
                 @endif
-                <div class="form-group">
-                    <label for="Username">Username</label>
-                    <input type="text" id="Username" class="form-control" name="name" placeholder="Username"
-                        value="{{ old('name') }}" required>
-                </div>
-                <div class="form-group">
-                    <label for="inputEmail4">Email</label>
-                    <input type="email" class="form-control" id="inputEmail4" name="email" placeholder="Email"
-                        value="{{ old('email') }}" required>
-                </div>
-                <div class="form-group">
-                    <label for="inputEmail4">Phone Number</label>
-                    <input type="no_hp" class="form-control" id="no_hp" name="no_hp" placeholder="Phone Number"
-                        value="{{ old('no_hp') }}" required>
-                </div>
-                <div class="form-group">
-                    <label for="inputrole">Role</label>
-                    <select class="form-control" id="jabatan" name="jabatan" placeholder="Role" required>
-                        <option selected>Select Role</option>
-                        <option value="admin">Admin</option>
-                        <option value="karyawan">Karyawan</option>
-                        <option value="apoteker">Apoteker</option>
-                        <option value="pemilik">Pemilik</option>
-                        <option value="kasir">Kasir</option>
-                        <option value="kurir">Kurir</option>
-                    </select>
-                </div>
-                <hr class="my-4">
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="inputPassword5">New Password</label>
-                            <input type="password" class="form-control" id="inputPassword5" name="password"
-                                placeholder="Password" value="{{ old('password') }}" required>
+                <form action="{{ route('register-user') }}" method="POST" class="login-form">
+                    @csrf
+                    <div class="login-field">
+                        <label class="login-field__label" for="Username">Username</label>
+                        <div class="login-field__input-wrap">
+                            <span class="login-field__icon"><i class="fas fa-user"></i></span>
+                            <input type="text" id="Username" name="name" class="login-field__input" placeholder="Username" value="{{ old('name') }}" required>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="inputPassword5">Password Confirm</label>
-                            <input type="password" class="form-control" id="password_confirmed"
-                                name="password_confirmation" placeholder="Password Confirm" required>
+                    <div class="login-field">
+                        <label class="login-field__label" for="inputEmail4">Email</label>
+                        <div class="login-field__input-wrap">
+                            <span class="login-field__icon"><i class="fas fa-envelope"></i></span>
+                            <input type="email" id="inputEmail4" name="email" class="login-field__input" placeholder="Email" value="{{ old('email') }}" required>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <p class="mb-2">Password requirements</p>
-                        <p class="small text-muted mb-2"> To create a new password, you have to meet all of the
-                            following requirements: </p>
-                        <ul class="small text-muted pl-4 mb-0">
-                            <li> Minimum 8 character </li>
-                            <li>At least one special character</li>
-                            <li>At least one number</li>
-                            <li>Can’t be the same as a previous password </li>
-                        </ul>
+                    <div class="login-field">
+                        <label class="login-field__label" for="no_hp">No. HP</label>
+                        <div class="login-field__input-wrap">
+                            <span class="login-field__icon"><i class="fas fa-phone"></i></span>
+                            <input type="text" id="no_hp" name="no_hp" class="login-field__input" placeholder="No. HP" value="{{ old('no_hp') }}" required>
+                        </div>
                     </div>
+                    <div class="login-field">
+                        <label class="login-field__label" for="jabatan">Role</label>
+                        <div class="login-field__input-wrap">
+                            <span class="login-field__icon"><i class="fas fa-user-tag"></i></span>
+                            <select class="login-field__input" id="jabatan" name="jabatan" required>
+                                <option value="" disabled selected>Pilih Role</option>
+                                <option value="admin">Admin</option>
+                                <option value="karyawan">Karyawan</option>
+                                <option value="apoteker">Apoteker</option>
+                                <option value="pemilik">Pemilik</option>
+                                <option value="kasir">Kasir</option>
+                                <option value="kurir">Kurir</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="login-field">
+                        <label class="login-field__label" for="inputPassword5">Password</label>
+                        <div class="login-field__input-wrap">
+                            <span class="login-field__icon"><i class="fas fa-lock"></i></span>
+                            <input type="password" id="inputPassword5" name="password" class="login-field__input login-field__input--password" placeholder="Password" required>
+                        </div>
+                    </div>
+                    <div class="login-field">
+                        <label class="login-field__label" for="password_confirmed">Konfirmasi Password</label>
+                        <div class="login-field__input-wrap">
+                            <span class="login-field__icon"><i class="fas fa-lock"></i></span>
+                            <input type="password" id="password_confirmed" name="password_confirmation" class="login-field__input login-field__input--password" placeholder="Konfirmasi Password" required>
+                        </div>
+                    </div>
+                    <div class="mb-3 mt-2">
+                        <p class="small text-muted mb-1">Password minimal 8 karakter, mengandung angka & karakter spesial.</p>
+                    </div>
+                    <button type="submit" class="login-submit-btn">Daftar Akun</button>
+                </form>
+                <div class="login-divider">
+                    <span>atau</span>
                 </div>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
-                <div class="text-center mt-4 fw-light"> Already have an account?
-                    <a href="{{ url('login') }}" class="text-primary">Login</a>
-                </div>
-                <p class="mt-5 mb-3 text-muted text-center">© 2020</p>
-            </form>
+                <a href="{{ url('login') }}" class="login-register-btn">Login Akun yang Sudah Ada</a>
+                <p class="login-footer-text mt-3">
+                    Hanya untuk akun internal (Admin, Apoteker, Kasir, Karyawan).<br>
+                    Dengan mendaftar, Anda menyetujui <a href="#">Syarat & Ketentuan</a> Medicare.
+                </p>
+            </div>
         </div>
     </div>
     <script src="{{ asset('auth/js/jquery.min.js') }}"></script>
     <script src="{{ asset('auth/js/popper.min.js') }}"></script>
-    <script src="{{ asset('auth/js/moment.min.js') }}"></script>
     <script src="{{ asset('auth/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('auth/js/simplebar.min.js') }}"></script>
-    <script src="{{ asset('auth/js/daterangepicker.js') }}"></script>
-    <script src="{{ asset('auth/js/jquery.stickOnScroll.js') }}"></script>
-    <script src="{{ asset('auth/js/tinycolor-min.js') }}"></script>
-    <script src="{{ asset('auth/js/config.js') }}"></script>
     <script src="{{ asset('auth/js/apps.js') }}"></script>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56159088-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
-        gtag('config', 'UA-56159088-1');
-    </script>
 </body>
-
 </html>

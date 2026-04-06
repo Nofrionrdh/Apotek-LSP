@@ -23,7 +23,7 @@ class ProductController extends Controller
 
     public function product()
     {
-        $jenis_obats = JenisObat::with('obat')->get();
+        $jenis_obats = JenisObat::with('obats')->get();
 
         return view('fe.product.index', [
             'title' => 'Produk List',

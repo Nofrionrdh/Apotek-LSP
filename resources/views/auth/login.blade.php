@@ -85,14 +85,14 @@
                 {{-- Mobile logo --}}
                 <a href="/" class="login-form-wrap__mobile-logo">
                     <span class="login-panel__logo-icon login-panel__logo-icon--sm">
-                        <i class="fas fa-plus-square"></i>
+                        <i class="fa-solid fa-pills"></i>
                     </span>
                     <span class="login-panel__logo-text login-panel__logo-text--dark">Medi<span class="login-panel__logo-accent">care</span></span>
                 </a>
 
                 <div class="login-form-wrap__heading">
-                    <h1 class="login-form-wrap__title">Selamat Datang</h1>
-                    <p class="login-form-wrap__subtitle">Masuk ke akun Medicare Anda</p>
+                    <h1 class="login-form-wrap__title">Login Admin & Staff</h1>
+                    <p class="login-form-wrap__subtitle">Masuk ke akun khusus Admin, Apoteker, Kasir, atau Karyawan Medicare</p>
                 </div>
 
                 {{-- Error alert --}}
@@ -166,12 +166,13 @@
                 </div>
 
                 <a href="{{ url('register') }}" class="login-register-btn">
-                    <i class="fas fa-user-plus me-2"></i>
-                    Buat Akun Baru
+                    {{-- <i class="fas fa-user-plus me-2"></i> --}}
+                    Daftar Akun Admin/Staff
                 </a>
 
                 <p class="login-footer-text">
-                    Dengan masuk, Anda menyetujui <a href="#">Syarat & Ketentuan</a> kami.
+                    Hanya untuk akun internal (Admin, Apoteker, Kasir, Karyawan).<br>
+                    Dengan masuk, Anda menyetujui <a href="#">Syarat & Ketentuan</a> Medicare.
                 </p>
             </div>
         </div>

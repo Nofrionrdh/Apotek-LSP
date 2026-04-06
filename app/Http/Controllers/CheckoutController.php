@@ -25,8 +25,24 @@ class CheckoutController extends Controller
 
         foreach($cart as $id => $details) {
             $total_price += $details['price'] * $details['quantity'];
+
+            // Enrich cart item with product info and detect if it's 'obat keras'
+            $obat = Obat::with('jenis_obat')->find($id);
+            $is_keras = false;
+            if ($obat && optional($obat->jenis_obat)->jenis) {
+                $jenisText = strtolower(optional($obat->jenis_obat)->jenis);
+                $is_keras = str_contains($jenisText, 'keras');
+            }
+
+            $details['is_keras'] = $is_keras;
+            if (!isset($details['image']) && $obat && $obat->foto1) {
+                $details['image'] = $obat->foto1;
+            }
+
             $checkout_items[] = $details;
         }
+
+        $has_obat_keras = collect($checkout_items)->where('is_keras', true)->count() > 0;
 
         // Ambil data jenis pengiriman dan metode pembayaran
         $jenis_pengirimans = JenisPengiriman::all();
@@ -37,7 +53,7 @@ class CheckoutController extends Controller
             'total_price',
             'jenis_pengirimans',
             'metode_bayars'
-        ));
+        ))->with('has_obat_keras', $has_obat_keras);
     }
 
     /**
@@ -77,6 +93,14 @@ class CheckoutController extends Controller
 
             // Parse products from JSON
             $products = json_decode($request->produk, true);
+            // If any product requires a prescription, enforce upload
+            foreach ($products as $p) {
+                $obat = Obat::with('jenis_obat')->find($p['id']);
+                $jenisText = strtolower(optional($obat->jenis_obat)->jenis ?? '');
+                if (str_contains($jenisText, 'keras') && !$request->hasFile('url_resep')) {
+                    return redirect()->back()->withInput()->with('error', 'Produk tertentu memerlukan resep. Silakan upload foto resep.');
+                }
+            }
             $subtotal = collect($products)->sum(function($item) {
                 return $item['price'] * $item['qty'];
             });

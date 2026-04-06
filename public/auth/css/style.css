@@ -17,8 +17,9 @@ html, body {
 .login-page-body {
     margin: 0;
     padding: 0;
-    overflow: hidden;
+    min-height: 100vh;
     font-family: 'Sora', 'Poppins', sans-serif;
+    /* overflow: hidden;  dihapus agar bisa scroll */
 }
 @media (max-width: 767.98px) {
     .login-page-body { overflow: auto; }
@@ -38,15 +39,23 @@ html, body {
 /* =====================================================
    LEFT PANEL — Branding
    ===================================================== */
+/* Vertically center, but not too low */
 .login-panel {
     position: relative;
     background: linear-gradient(135deg, #000a57 0%, #001a7a 50%, #0066cc 100%);
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     padding: 2rem;
     overflow: hidden;
     min-height: 100vh;
+}
+.login-panel__content {
+    margin-top: 7vh;
+    margin-bottom: 7vh;
+}
+@media (max-width: 991.98px) {
+    .login-panel__content { margin-top: 2rem; margin-bottom: 2rem; }
 }
 @media (max-width: 991.98px) {
     .login-panel { display: none; }

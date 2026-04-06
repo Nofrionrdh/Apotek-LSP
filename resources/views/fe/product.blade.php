@@ -268,6 +268,34 @@
                 });
             });
         });
+
+        // Filter tabs fallback (works even if Bootstrap JS not loaded)
+        var filterTabs = document.querySelectorAll('.prod-filter-tab');
+        if (filterTabs.length) {
+            var tabPanes = document.querySelectorAll('.tab-pane');
+
+            filterTabs.forEach(function(tab) {
+                tab.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    // Toggle active class on tabs
+                    filterTabs.forEach(function(t) { t.classList.remove('is-active'); });
+                    this.classList.add('is-active');
+
+                    // Show/hide tab panes
+                    tabPanes.forEach(function(p) { p.classList.remove('show', 'active'); p.classList.add('fade'); });
+                    var targetId = this.getAttribute('href').replace('#', '');
+                    var target = document.getElementById(targetId);
+                    if (target) {
+                        target.classList.add('show', 'active');
+                        target.classList.remove('fade');
+                    }
+
+                    // Update URL hash without scrolling
+                    try { history.replaceState(null, '', '#'+targetId); } catch (err) {}
+                });
+            });
+        }
     });
 </script>
 @endpush
