@@ -26,6 +26,7 @@ class Penjualan extends Model
         'id_jenis_kirim',
         'id_pelanggan',
         'no_pemesanan',
+        'province_id',
     ];
 
     // Relasi contoh (kalau sudah buat model lain)

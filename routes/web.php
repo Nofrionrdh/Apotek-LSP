@@ -254,12 +254,12 @@ Route::get('/pengiriman/{id}/show', [App\Http\Controllers\PengirimanController::
 // Tambahkan route untuk proses pembayaran
 Route::post('/checkout/process-payment', [CheckoutController::class, 'processPayment'])->name('checkout.processPayment');
 
-// RajaOngkir cost lookup
-Route::post('/rajaongkir/cost', [App\Http\Controllers\OngkirController::class, 'calculateCost'])->name('rajaongkir.cost');
-// RajaOngkir provinces and cities
-Route::get('/rajaongkir/province', [App\Http\Controllers\OngkirController::class, 'getProvinces'])->name('rajaongkir.province');
-Route::get('/rajaongkir/city', [App\Http\Controllers\OngkirController::class, 'getCities'])->name('rajaongkir.city');
-Route::post('/checkout/payment-callback', [CheckoutController::class, 'paymentCallback'])->name('checkout.payment.callback');
+// // RajaOngkir cost lookup
+// Route::post('/rajaongkir/cost', [App\Http\Controllers\OngkirController::class, 'calculateCost'])->name('rajaongkir.cost');
+// // RajaOngkir provinces and cities
+// Route::get('/rajaongkir/province', [App\Http\Controllers\OngkirController::class, 'getProvinces'])->name('rajaongkir.province');
+// Route::get('/rajaongkir/city', [App\Http\Controllers\OngkirController::class, 'getCities'])->name('rajaongkir.city');
+// Route::post('/checkout/payment-callback', [CheckoutController::class, 'paymentCallback'])->name('checkout.payment.callback');
 // Route::post('/checkout/process-order', [CheckoutController::class, 'processOrder'])->name('checkout.processOrder');
 
 Route::resource('pemesanan', App\Http\Controllers\PemesananController::class)->only(['index', 'destroy']);
